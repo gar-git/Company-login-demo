@@ -4,27 +4,25 @@ const fs = require('fs');
 
 const maxSize = 2 * 1024 * 1024;
 
-const destinationStorage = path.resolve(__dirname, 'uploads/');
-
-// Create the destination directory if it doesn't exist
-if (!fs.existsSync(destinationStorage)) {
-    try {
-        fs.mkdirSync(destinationStorage, { recursive: true });
-        console.log(`Directory '${destinationStorage}' created.`);
-    } catch (err) {
-        console.error('Error creating directory:', err);
-    }
-}
+const tempFileLocation =
+    process.env.FILE_LOCATION + process.env.TEMP_FILE_LOCATION;
+let dir;
 
 let storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, destinationStorage);
+        dir = __basedir + tempFileLocation;
+        //console.log(dir);
+        if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir, { recursive: true });
+        }
+        cb(null, dir);
     },
     filename: (req, file, cb) => {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
         cb(null, 'companyLogin-' + uniqueSuffix + path.extname(file.originalname));
     },
 });
+
 
 let upload = multer({
     storage: storage,
@@ -34,7 +32,7 @@ let upload = multer({
 const handleImageFile = (file, req) => {
     const uploadedImage = {
         fileName: file.filename,
-        filePath: path.join(destinationStorage, file.filename),
+        filePath: path.join(dir, file.filename),
     };
 
     console.log('Image uploaded and saved at:', uploadedImage.filePath);

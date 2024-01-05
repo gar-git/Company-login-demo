@@ -12,12 +12,12 @@ import useAuth from 'hooks/useAuth';
 
 // ==============================|| MAIN LOGO ||============================== //
 
-const LogoSection = ({ reverse, isIcon, sx, to }) => {
+const LogoSection = ({ reverse, isIcon, sx, to, companyLogin }) => {
   const { isLoggedIn } = useAuth();
 
   return (
     <ButtonBase disableRipple {...(isLoggedIn && { component: Link, to: !to ? APP_DEFAULT_PATH : to, sx })}>
-      {isIcon ? <LogoIcon /> : <Logo reverse={reverse} />}
+      {isIcon ? <LogoIcon /> : <Logo reverse={reverse} companyLogin={companyLogin}/>}
     </ButtonBase>
   );
 };

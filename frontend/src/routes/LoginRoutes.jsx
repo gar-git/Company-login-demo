@@ -26,6 +26,10 @@ const LoginRoutes = {
           element: <AuthLogin />
         },
         {
+          path: 'login/:companyCode',
+          element: <AuthLogin />
+        },
+        {
           path: 'register',
           element: <AuthRegister />
         },

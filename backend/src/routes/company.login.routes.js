@@ -20,5 +20,6 @@ router.post(
     },
     companyLoginController.updateCompanyLogin
 );
+router.post("/getCompanyLoginByCompanyCode", companyLoginController.getCompanyByCompanyCode);
 
 module.exports = router;

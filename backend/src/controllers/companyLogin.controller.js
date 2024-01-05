@@ -13,6 +13,8 @@ class CompanyLoginController {
     try {
       const result = await companyLoginManager.getCompanyByCompanyCode(req);
 
+      console.log(result);
+
       if (result) {
         return apiResponse.successResponseWithData(
           res,
