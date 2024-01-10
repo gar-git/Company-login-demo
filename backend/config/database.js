@@ -3,11 +3,7 @@ const env = process.env.NODE_ENV || "development";
 const config = require("../config/config.json")[env];
 const { database, username, password, host, dialect } = config;
 const { exec } = require("child_process");
-const dbConfig = require("../src/helpers/dbConfig");
 
-
-const dbData = dbConfig.getdbConfig();
-console.log(dbData);
 
 let sequelize;
 if (config.use_env_variable) {
