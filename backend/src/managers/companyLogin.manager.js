@@ -1,9 +1,10 @@
 const CompanyLoginData = require("../datalayers/companyLogin.data");
+const dbConfig = require("../helpers/dbConfig");
 
 const companyLoginData = new CompanyLoginData();
 
 class CompanyLoginManager {
-;  /**
+  /**
    * *Get Company By CompanyCode
    * @param {model} companyLogin.validators
    * @returns {object}
@@ -11,17 +12,22 @@ class CompanyLoginManager {
   async getCompanyByCompanyCode(req) {
     try {
       const result = await companyLoginData.getCompanyByCompanyCode(req);
-    //   console.log(result);
       let company = {};
 
       if (result && result.length > 0) {
-        const module = result[0][0];
-        console.log(module);
+        const module1 = result[0][0];
+        const module2 = result[1][0];
+        // Update  dbconfiguration
+        dbConfig.setdbConfig({
+            dbName: module2.dbName,
+            userName: module2.userName,
+            password: module2.password
+          });
         company = {
-          companyID: module.companyID,
-          companyName: module.companyName,
-          companyCode: module.companyCode,
-          companyLogo: module.companyLogo,
+          companyID: module1.companyID,
+          companyName: module1.companyName,
+          companyCode: module1.companyCode,
+          companyLogo: module1.companyLogo,
         };
       }
       return company;
@@ -44,7 +50,7 @@ class CompanyLoginManager {
             // console.log("first",uploadedImage);
         }
       const result = await companyLoginData.updateCompanyLogin(req, uploadedImage);
-      return result[0];
+      return result[0][0];
     } catch (error) {}
   }
 }

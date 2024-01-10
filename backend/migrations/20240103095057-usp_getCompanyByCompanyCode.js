@@ -19,8 +19,15 @@ module.exports = {
                 IN companyCode VARCHAR(255)
             )
             BEGIN
-                SELECT * FROM companyLogins AS c
+				DECLARE cID INT;
+                
+				SELECT * FROM companyLogins AS c
                 WHERE c.companyCode = companyCode;
+                
+                SET cID = (SELECT companyID FROM companyLogins WHERE companyCode = companyCode);
+                
+                SELECT * FROM dbConfigs AS db
+                WHERE db.companyID = cID;
             END
 		`;
 			return await queryInterface.sequelize.query(createProcedureSQL);

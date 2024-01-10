@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const logoUpload = require("../middlewares/upload");
 const CompanyLoginController = require("../controllers/companyLogin.controller");
+const {restartServer} = require("../middlewares/shell");
 
 const companyLoginController = new CompanyLoginController();
 const router = Router();
@@ -9,7 +10,7 @@ router.post(
     "/createCompanyLogin",
     logoUpload.upload,
     (req, res, next) => {
-        // File handling middlewaref
+        // File handling middleware
         if (!req.file) {
             return res.status(400).json({ error: 'No files uploaded.' });
         }
@@ -20,6 +21,6 @@ router.post(
     },
     companyLoginController.updateCompanyLogin
 );
-router.post("/getCompanyLoginByCompanyCode", companyLoginController.getCompanyByCompanyCode);
+router.post("/getCompanyLoginByCompanyCode", companyLoginController.getCompanyByCompanyCode, restartServer);
 
 module.exports = router;

@@ -31,7 +31,7 @@ class CompanyLoginData {
    * @returns {Object}
    */
   async updateCompanyLogin(req, uploadedImage) {
-    const { companyID, companyName, companyCode, actionType } = req.body;
+    const { companyID, companyName, companyCode, actionType, userName, password } = req.body;
     const procedure = "usp_updateCompanyLogin";
 
     try {
@@ -39,7 +39,7 @@ class CompanyLoginData {
         const filePath = uploadedImage ? uploadedImage.filePath : null;
 
         const result = await db.query(
-            `CALL ${procedure}(:companyID, :companyName, :companyCode, :companyLogo, :actionType)`,
+            `CALL ${procedure}(:companyID, :companyName, :companyCode, :companyLogo, :userName, :password)`,
             {
                 replacements: {
                     companyID,
@@ -47,11 +47,14 @@ class CompanyLoginData {
                     companyCode,
                     companyLogo: filePath, // Pass the file path instead of the entire object
                     actionType,
+                    userName,
+                    password
                 },
-                type: db.QueryTypes.SELECT,
+                type: db.QueryTypes.RAW,
             }
         );
 
+        console.log(result);
         return result;
     } catch (error) {
         throw error;

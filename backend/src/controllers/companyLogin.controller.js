@@ -13,9 +13,8 @@ class CompanyLoginController {
     try {
       const result = await companyLoginManager.getCompanyByCompanyCode(req);
 
-      console.log(result);
-
       if (result) {
+        next();
         return apiResponse.successResponseWithData(
           res,
           "ActionType Details.",
@@ -58,6 +57,7 @@ class CompanyLoginController {
     } catch (error) {
       return apiResponse.expectationFailedResponse(res, error);
     }
+     next();
   }
 }
 

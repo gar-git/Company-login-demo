@@ -20,28 +20,30 @@ module.exports = {
                 IN companyName VARCHAR(255),
                 IN companyCode VARCHAR(255),
                 IN companyLogo VARCHAR(255),
-                IN actionType INT
+                IN userName VARCHAR(255),
+                IN password VARCHAR(255)
             )
             BEGIN
                 DECLARE cID INT;
                 
-                -- Create
-                IF actionType = 1 THEN
+					-- Create a unique database name based on companyCode
+					SET @dbName = CONCAT(companyCode, '_db');
+
+					-- Create database
+					SET @createDbQuery = CONCAT('CREATE DATABASE IF NOT EXISTS ', @dbName);
+					PREPARE stmt FROM @createDbQuery;
+					EXECUTE stmt;
+					DEALLOCATE PREPARE stmt;
+                    
+                    -- Insert into companyLogins
                     INSERT INTO companyLogins(companyName, companyCode, companyLogo)
                     VALUES(companyName, companyCode, companyLogo);
                     
                     SET cID = (SELECT LAST_INSERT_ID());
                     
-                -- Update
-                ELSEIF actionType = 2 AND companyID > 0 THEN
-                    UPDATE companyLogins as c
-                    SET
-                        c.companyName = companyName,
-                        c.companyCode = companyCode,
-                        c.companyLogo = companyLogo
-                    WHERE c.companyID = companyID;
-                    SET cID = companyID;
-                END IF;
+                    INSERT INTO dbConfigs(companyID, dbName, userName, password)
+                    VALUES(cID, @dbName, userName, password);
+                    
                 SELECT cID as companyID;
             END
 		`;
