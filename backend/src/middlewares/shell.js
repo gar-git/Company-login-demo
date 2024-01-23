@@ -4,7 +4,7 @@ const shell = require('shelljs');
 
 exports.restartServer = (next) => {
   // Execute the shell command to restart nodemon
-  const result = shell.exec(`Stop-Process -Name nodemon -Force -ErrorAction SilentlyContinue ; nodemon server.js`);
+  const result = shell.exec(`rs`);
 
   // Check if the command was successful
   if (result.code !== 0) {

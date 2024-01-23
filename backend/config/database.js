@@ -3,13 +3,15 @@ const env = process.env.NODE_ENV || "development";
 const config = require("../config/config.json")[env];
 const { database, username, password, host, dialect } = config;
 const { exec } = require("child_process");
+const dbConfig = require("../src/helpers/dbConfig");
 
+const db=dbConfig.getdbConfig();
 
 let sequelize;
 if (config.use_env_variable) {
     sequelize = new Sequelize(process.env[config.use_env_variable], config);
 } else {
-    sequelize = new Sequelize(database, username, password, config);
+    sequelize = new Sequelize(db.dbName, db.userName, db.password, config);
 }
 sequelize
     .authenticate()

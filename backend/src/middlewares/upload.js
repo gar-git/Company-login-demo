@@ -34,7 +34,6 @@ const handleImageFile = (file, req) => {
         fileName: file.filename,
         filePath: path.join(dir, file.filename),
     };
-
     console.log('Image uploaded and saved at:', uploadedImage.filePath);
 
     // Check if the file exists

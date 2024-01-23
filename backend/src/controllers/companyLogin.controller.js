@@ -14,6 +14,7 @@ class CompanyLoginController {
       const result = await companyLoginManager.getCompanyByCompanyCode(req);
 
       if (result) {
+        
         return apiResponse.successResponseWithData(
           res,
           "ActionType Details.",
